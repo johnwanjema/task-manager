@@ -1,6 +1,5 @@
 <template>
-    <canvas id="canvas" width="400" height="400" style="background-color: #333">
-                          </canvas>
+    <canvas id="canvas" width="400" height="400" style="background-color: #333; padding-top:20px;"></canvas>
 </template>
 
 <script>
@@ -19,8 +18,8 @@ export default {
             var canvas = document.getElementById("canvas");
             var ctx = canvas.getContext("2d");
             this.ctx = canvas.getContext("2d");
-            var radius = canvas.height / 2;
-            this.radius = canvas.height / 2;
+            var radius = canvas.height / 3;
+            this.radius = canvas.height / 3;
             ctx.translate(radius, radius);
             radius = radius * 0.9;
             var v = this;

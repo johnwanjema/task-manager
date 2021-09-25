@@ -15,7 +15,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -31,8 +30,8 @@ __webpack_require__.r(__webpack_exports__);
       var canvas = document.getElementById("canvas");
       var ctx = canvas.getContext("2d");
       this.ctx = canvas.getContext("2d");
-      var radius = canvas.height / 2;
-      this.radius = canvas.height / 2;
+      var radius = canvas.height / 3;
+      this.radius = canvas.height / 3;
       ctx.translate(radius, radius);
       radius = radius * 0.9;
       var v = this;
@@ -218,7 +217,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("canvas", {
-    staticStyle: { "background-color": "#333" },
+    staticStyle: { "background-color": "#333", "padding-top": "20px" },
     attrs: { id: "canvas", width: "400", height: "400" }
   })
 }
