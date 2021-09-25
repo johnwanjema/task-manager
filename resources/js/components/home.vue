@@ -1,13 +1,17 @@
 <template>
     <canvas id="canvas" width="400" height="400" style="background-color: #333">
-                      </canvas>
+                          </canvas>
 </template>
 
 <script>
 export default {
     data() {
-        return{
-            clock:''
+        return {
+            ctx: '',
+            radius: '',
+            second:0,
+            minute:0,
+            hour:12,
         }
     },
     methods: {
@@ -21,9 +25,19 @@ export default {
             radius = radius * 0.9;
             var v = this;
             setInterval(function() {
-                v.drawClock()
-            }, 1000)
-            // setInterval(this.drawClock(ctx,radius), 1000);
+                v.drawClock();
+                if(v.second == 59){
+                    v.second = 0;
+                    if(v.minute == 59){
+                        v.minute = 0;
+                        v.hour++;
+                    }else{
+                        v.minute++;
+                    }
+                }else{
+                    v.second++;
+                }
+            }, 1000);
         },
         drawClock() {
             // console.log(this.ctx,this.radius)
@@ -67,10 +81,17 @@ export default {
             }
         },
         drawTime(ctx, radius) {
-            var now = new Date();
-            var hour = now.getHours();
-            var minute = now.getMinutes();
-            var second = now.getSeconds();
+            var hour = this.hour;
+            var minute = this.minute;
+            var second = this.second;
+
+            // var now = new Date();
+            // var hour = now.getHours();
+            // var minute = now.getMinutes();
+            // var second = now.getSeconds();
+
+            // console.log(hour,minute,second);
+
             //hour
             hour = hour % 12;
             hour = (hour * Math.PI / 6) +
@@ -95,8 +116,8 @@ export default {
             ctx.rotate(-pos);
         }
     },
-    mounted(){
-      this.createClock();  
+    mounted() {
+        this.createClock();
     }
 };
 </script>

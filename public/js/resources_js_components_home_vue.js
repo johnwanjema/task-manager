@@ -19,7 +19,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      clock: ''
+      ctx: '',
+      radius: '',
+      second: 0,
+      minute: 0,
+      hour: 12
     };
   },
   methods: {
@@ -34,7 +38,20 @@ __webpack_require__.r(__webpack_exports__);
       var v = this;
       setInterval(function () {
         v.drawClock();
-      }, 1000); // setInterval(this.drawClock(ctx,radius), 1000);
+
+        if (v.second == 59) {
+          v.second = 0;
+
+          if (v.minute == 59) {
+            v.minute = 0;
+            v.hour++;
+          } else {
+            v.minute++;
+          }
+        } else {
+          v.second++;
+        }
+      }, 1000);
     },
     drawClock: function drawClock() {
       // console.log(this.ctx,this.radius)
@@ -79,10 +96,14 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     drawTime: function drawTime(ctx, radius) {
-      var now = new Date();
-      var hour = now.getHours();
-      var minute = now.getMinutes();
-      var second = now.getSeconds(); //hour
+      var hour = this.hour;
+      var minute = this.minute;
+      var second = this.second; // var now = new Date();
+      // var hour = now.getHours();
+      // var minute = now.getMinutes();
+      // var second = now.getSeconds();
+      // console.log(hour,minute,second);
+      //hour
 
       hour = hour % 12;
       hour = hour * Math.PI / 6 + minute * Math.PI / (6 * 60) + second * Math.PI / (360 * 60);
