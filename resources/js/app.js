@@ -5,28 +5,75 @@
  */
 
 require('./bootstrap');
+require('../sass/app.scss')
 
-window.Vue = require('vue').default;
+import Vue from 'vue'
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+window.Vue = require('vue');
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+// router
+import router from './routes.js';
+window.router = router;
+window.Fire = new Vue();
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+//v-form
+import { Form, HasError, AlertError } from 'vform'
+window.Form = Form;
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+//axios
+import axios from "axios";
+window.axios = axios;
+
+
+//Bootstrtap vue
+import BootstrapVue from 'bootstrap-vue'
+
+//bootstapVue
+Vue.use(BootstrapVue);
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+//jquery
+import $ from 'jquery'
+window.$ = $
+
+import Swal from 'sweetalert2'
+window.Swal = Swal;
+
+//UPPERCASE TEXT
+Vue.filter('uppercaseText', function (text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+});
+
+//===momentjs ========
+import moment from 'moment'
+
+Vue.filter('filterDate', function (myDate) {
+    return moment(new Date(myDate)).format('Do MMMM YYYY, HH:mm:ss A');
+});
+
+Vue.filter('filterDateOnly', function (myDate) {
+    return moment(new Date(myDate)).format('Do MMMM YYYY');
+});
+
+Vue.filter('filterHumanDate', function (myDate) {
+    return moment(new Date(myDate)).format('Do MMMM YYYY, h:mm:ss A');
+})
+
+Vue.filter('humanize', function (value) {
+    return moment(value).fromNow()
+});
+
+
+const toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+})
+
+window.toast = toast
 
 const app = new Vue({
     el: '#app',
-});
+    router,
+}).$mount('#app');
