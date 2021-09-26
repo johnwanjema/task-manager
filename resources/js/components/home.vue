@@ -165,13 +165,13 @@ export default {
             // console.log("time on the clock " + this.form.programTime);
         },
         startCountDown() {
-            var timeLeft = 3;
-            setInterval(countdown, 2000);
+            var timeLeft = 30;
+            setInterval(countdown, 1000);
             var v = this;
 
             function countdown() {
                 if (timeLeft == 0) {
-                    timeLeft = 3;
+                    timeLeft = 30;
                     v.startServers();
                 } else {
                     timeLeft--;
@@ -181,15 +181,15 @@ export default {
             }
         },
         stopCountDown() {
-            var timeLeft = 4;
+            var timeLeft = 40;
 
-            setInterval(countdown, 2000);
+            setInterval(countdown, 1000);
 
             var v = this;
 
             function countdown() {
                 if (timeLeft == 0) {
-                    timeLeft = 4;
+                    timeLeft = 40;
                     v.stopServers();
                 } else {
                     timeLeft--;
@@ -199,7 +199,7 @@ export default {
             }
         },
         reportCountDown() {
-            var timeLeft = 5;
+            var timeLeft = 50;
 
             setInterval(countdown, 1000);
 
@@ -207,13 +207,12 @@ export default {
 
             function countdown() {
                 if (timeLeft == 0) {
-                    timeLeft = 5;
+                    timeLeft = 50;
                     v.reportServers();
                 } else {
                     timeLeft--;
                 }
                 // console.log(timeLeft);
-
             }
         },
         getTimeOnTheClock() {
@@ -236,10 +235,10 @@ export default {
         }
     },
     mounted() {
-        // this.createClock();
-        // this.startCountDown();
-        // this.stopCountDown();
-        // this.reportCountDown();
+        this.createClock();
+        this.startCountDown();
+        this.stopCountDown();
+        this.reportCountDown();
     }
 };
 </script>

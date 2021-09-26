@@ -177,13 +177,13 @@ __webpack_require__.r(__webpack_exports__);
       // console.log("time on the clock " + this.form.programTime);
     },
     startCountDown: function startCountDown() {
-      var timeLeft = 3;
-      setInterval(countdown, 2000);
+      var timeLeft = 30;
+      setInterval(countdown, 1000);
       var v = this;
 
       function countdown() {
         if (timeLeft == 0) {
-          timeLeft = 3;
+          timeLeft = 30;
           v.startServers();
         } else {
           timeLeft--;
@@ -192,13 +192,13 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     stopCountDown: function stopCountDown() {
-      var timeLeft = 4;
-      setInterval(countdown, 2000);
+      var timeLeft = 40;
+      setInterval(countdown, 1000);
       var v = this;
 
       function countdown() {
         if (timeLeft == 0) {
-          timeLeft = 4;
+          timeLeft = 40;
           v.stopServers();
         } else {
           timeLeft--;
@@ -207,13 +207,13 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     reportCountDown: function reportCountDown() {
-      var timeLeft = 5;
+      var timeLeft = 50;
       setInterval(countdown, 1000);
       var v = this;
 
       function countdown() {
         if (timeLeft == 0) {
-          timeLeft = 5;
+          timeLeft = 50;
           v.reportServers();
         } else {
           timeLeft--;
@@ -239,10 +239,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  mounted: function mounted() {// this.createClock();
-    // this.startCountDown();
-    // this.stopCountDown();
-    // this.reportCountDown();
+  mounted: function mounted() {
+    this.createClock();
+    this.startCountDown();
+    this.stopCountDown();
+    this.reportCountDown();
   }
 });
 
