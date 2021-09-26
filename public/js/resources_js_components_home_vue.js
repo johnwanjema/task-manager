@@ -43,8 +43,6 @@ __webpack_require__.r(__webpack_exports__);
       minute: 0,
       hour: 12,
       servers: 0,
-      // actualTime: moment().format("HH:mm:ss A"),
-      // programTime: '',
       form: new Form({
         programTime: '',
         event: '',
@@ -62,26 +60,9 @@ __webpack_require__.r(__webpack_exports__);
       this.radius = canvas.height / 3;
       ctx.translate(radius, radius);
       radius = radius * 0.9;
-      var v = this;
-      setInterval(function () {
-        v.drawClock();
-
-        if (v.second == 59) {
-          v.second = 0;
-
-          if (v.minute == 59) {
-            v.minute = 0;
-            v.hour++;
-          } else {
-            v.minute++;
-          }
-        } else {
-          v.second++;
-        }
-      }, 1000);
+      this.getCurrentTime();
     },
     drawClock: function drawClock() {
-      // console.log(this.ctx,this.radius)
       this.drawFace(this.ctx, this.radius);
       this.drawNumbers(this.ctx, this.radius);
       this.drawTime(this.ctx, this.radius);
@@ -148,24 +129,24 @@ __webpack_require__.r(__webpack_exports__);
       ctx.rotate(-pos);
     },
     startServers: function startServers() {
-      var random = Math.floor(Math.random() * (20 - 10 + 1)) + 10; // console.log("start random " + random);
-
+      var random = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
       this.servers = this.servers + random;
-      console.log("start servers ni hizi " + this.servers);
       this.getTimeOnTheClock();
       this.form.event = 'START';
-      this.form.message = 'Start ' + this.servers + ' servers';
-      this.addTask('success'); // console.log("actualTime " + this.form.actualTime);
-      // console.log("time on the clock " + this.form.programTime);
+      this.form.message = 'Start ' + random + ' servers';
+      this.addTask('success');
+      console.log("start servers ni hizi " + random);
+      console.log("total servers ni hizi " + this.servers);
     },
     stopServers: function stopServers() {
       var random = Math.floor(Math.random() * (this.servers - 5 + 1)) + 5;
-      console.log("stop random " + random);
       this.servers = this.servers - random;
       this.getTimeOnTheClock();
       this.form.event = 'STOP';
       this.form.message = 'Stop ' + random + ' servers';
-      this.addTask('warning'); // console.log("actualTime " + this.form.actualTime);
+      this.addTask('warning');
+      console.log("stop servers " + random);
+      console.log("total servers " + this.servers); // console.log("actualTime " + this.form.actualTime);
       // console.log("time on the clock " + this.form.programTime);
     },
     reportServers: function reportServers() {
@@ -173,62 +154,14 @@ __webpack_require__.r(__webpack_exports__);
       this.getTimeOnTheClock();
       this.form.event = 'REPORT';
       this.form.message = 'Report ' + this.servers + ' servers running';
-      this.addTask('info'); // console.log("actualTime " + this.form.actualTime);
-      // console.log("time on the clock " + this.form.programTime);
-    },
-    startCountDown: function startCountDown() {
-      var timeLeft = 30;
-      setInterval(countdown, 1000);
-      var v = this;
-
-      function countdown() {
-        if (timeLeft == 0) {
-          timeLeft = 30;
-          v.startServers();
-        } else {
-          timeLeft--;
-        } // console.log(timeLeft);
-
-      }
-    },
-    stopCountDown: function stopCountDown() {
-      var timeLeft = 40;
-      setInterval(countdown, 1000);
-      var v = this;
-
-      function countdown() {
-        if (timeLeft == 0) {
-          timeLeft = 40;
-          v.stopServers();
-        } else {
-          timeLeft--;
-        } // console.log(timeLeft);
-
-      }
-    },
-    reportCountDown: function reportCountDown() {
-      var timeLeft = 50;
-      setInterval(countdown, 1000);
-      var v = this;
-
-      function countdown() {
-        if (timeLeft == 0) {
-          timeLeft = 50;
-          v.reportServers();
-        } else {
-          timeLeft--;
-        } // console.log(timeLeft);
-
-      }
+      this.addTask('info');
     },
     getTimeOnTheClock: function getTimeOnTheClock() {
-      this.form.programTime = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm:ss A");
       this.form.actualTime = moment__WEBPACK_IMPORTED_MODULE_0___default()().format("hh:mm:ss A");
     },
     addTask: function addTask(icon) {
       var _this = this;
 
-      console.log('adding event');
       toast.fire({
         icon: icon,
         title: this.form.message
@@ -241,13 +174,58 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (e) {
         console.log(error);
       });
+    },
+    getCurrentTime: function getCurrentTime() {
+      var startTime = new Date();
+      var v = this;
+      var startTimeLeft = 30;
+      var stopTimeLeft = 40;
+      var reportTimeLeft = 50;
+
+      function clock() {
+        // v.drawClock();
+        //the time you want to start from
+        var mytime = new Date(2011, 0, 1, 12, 0, 0, 567); ///calcualte the difference between the start and current time
+
+        var diff = new Date() - startTime; //add that difference to the offset time
+
+        mytime.setMilliseconds(mytime.getMilliseconds() + diff); //Generate your output
+
+        v.second = mytime.getSeconds();
+        v.minute = mytime.getMinutes();
+        v.hour = mytime.getHours();
+        v.form.programTime = v.hour + ":" + v.minute + ":" + v.second;
+        v.drawFace(v.ctx, v.radius);
+        v.drawNumbers(v.ctx, v.radius);
+        v.drawTime(v.ctx, v.radius);
+
+        if (startTimeLeft == 1) {
+          startTimeLeft = 30;
+          v.startServers();
+        } else {
+          startTimeLeft--;
+        }
+
+        if (stopTimeLeft == 1) {
+          stopTimeLeft = 40;
+          v.stopServers();
+        } else {
+          stopTimeLeft--;
+        }
+
+        if (reportTimeLeft == 1) {
+          reportTimeLeft = 50;
+          v.reportServers();
+        } else {
+          reportTimeLeft--;
+        }
+      }
+
+      setInterval(clock, 1000);
     }
   },
   mounted: function mounted() {
     this.createClock();
-    this.startCountDown();
-    this.stopCountDown();
-    this.reportCountDown();
   }
 });
 
