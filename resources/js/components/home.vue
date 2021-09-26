@@ -236,10 +236,10 @@ export default {
         }
     },
     mounted() {
-        this.createClock();
-        this.startCountDown();
-        this.stopCountDown();
-        this.reportCountDown();
+        // this.createClock();
+        // this.startCountDown();
+        // this.stopCountDown();
+        // this.reportCountDown();
     }
 };
 </script>

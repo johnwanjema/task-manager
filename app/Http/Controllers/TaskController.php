@@ -10,11 +10,12 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response    
      */
     public function index()
     {
-        //
+        $tasks = Task::orderBY('created_at', 'DESC')->get();
+        return api_response(true, null, 200, 'success', 'successfully fetched all tasks', $tasks);
     }
 
     /**

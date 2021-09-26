@@ -239,11 +239,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  mounted: function mounted() {
-    this.createClock();
-    this.startCountDown();
-    this.stopCountDown();
-    this.reportCountDown();
+  mounted: function mounted() {// this.createClock();
+    // this.startCountDown();
+    // this.stopCountDown();
+    // this.reportCountDown();
   }
 });
 
@@ -269,6 +268,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -281,18 +326,7 @@ __webpack_require__.r(__webpack_exports__);
       }, 'message', 'actualTime'],
       filter: null,
       filterOn: [],
-      form: new Form({
-        id: '',
-        title: '',
-        description: '',
-        snippet: ''
-      }),
-      reports: [{
-        programTime: '12:00:30',
-        event: 'start',
-        message: 'Start 16 servers',
-        actualTime: '10:00:30am'
-      }]
+      reports: []
     };
   },
   computed: {
@@ -304,7 +338,21 @@ __webpack_require__.r(__webpack_exports__);
     onFiltered: function onFiltered(filteredItems) {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    getTasks: function getTasks() {
+      var _this = this;
+
+      axios.get("/api/tasks").then(function (_ref) {
+        var data = _ref.data;
+        _this.reports = data.data;
+        _this.totalRows = _this.reports.length;
+      })["catch"](function (e) {
+        console.log(error);
+      });
     }
+  },
+  mounted: function mounted() {
+    this.getTasks();
   }
 });
 
@@ -507,37 +555,204 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("b-table", {
-        attrs: {
-          responsive: "",
-          striped: "",
-          hover: "",
-          "show-empty": "",
-          items: _vm.reports,
-          fields: _vm.fields,
-          "per-page": _vm.perPage,
-          "current-page": _vm.currentPage,
-          filter: _vm.filter,
-          filterIncludedFields: _vm.filterOn
-        },
-        on: { filtered: _vm.onFiltered },
-        scopedSlots: _vm._u([
-          {
-            key: "cell(#)",
-            fn: function(row) {
-              return [_c("p", [_vm._v(_vm._s(row.index + 1))])]
-            }
-          }
+  return _c("div", [
+    _c("div", { staticClass: "card " }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-sm-12 col-md-6" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "dataTables_length",
+                  attrs: { id: "DataTables_Table_1_length" }
+                },
+                [
+                  _c("label", [
+                    _vm._v(
+                      "\n                                        Show\n                                        "
+                    ),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.perPage,
+                            expression: "perPage"
+                          }
+                        ],
+                        staticClass:
+                          "custom-select custom-select-sm form-control form-control-sm",
+                        attrs: {
+                          name: "DataTables_Table_1_length",
+                          "aria-controls": "DataTables_Table_1"
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.perPage = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "5" } }, [_vm._v("5")]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "8" } }, [_vm._v("8")]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "15" } }, [
+                          _vm._v("15")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "20" } }, [_vm._v("20")])
+                      ]
+                    ),
+                    _vm._v(
+                      "\n                                        entries\n                                    "
+                    )
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-12 col-md-6" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "dataTables_filter",
+                  attrs: { id: "DataTables_Table_1_filter" }
+                },
+                [
+                  _c("label", [
+                    _vm._v("Search:"),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.filter,
+                          expression: "filter"
+                        }
+                      ],
+                      staticClass: "form-control form-control-sm",
+                      attrs: {
+                        type: "search",
+                        placeholder: "",
+                        "aria-controls": "DataTables_Table_1"
+                      },
+                      domProps: { value: _vm.filter },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.filter = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("b-table", {
+            attrs: {
+              responsive: "",
+              striped: "",
+              hover: "",
+              "show-empty": "",
+              small: _vm.small,
+              items: _vm.reports,
+              fields: _vm.fields,
+              "per-page": _vm.perPage,
+              "current-page": _vm.currentPage,
+              filter: _vm.filter,
+              filterIncludedFields: _vm.filterOn
+            },
+            on: { filtered: _vm.onFiltered },
+            scopedSlots: _vm._u([
+              {
+                key: "cell(#)",
+                fn: function(row) {
+                  return [_c("p", [_vm._v(_vm._s(row.index + 1))])]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-footer " }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-7" }),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-5" },
+            [
+              _c("b-pagination", {
+                staticStyle: { float: "left" },
+                attrs: {
+                  "total-rows": _vm.rows,
+                  "per-page": _vm.perPage,
+                  "aria-controls": "my-table"
+                },
+                model: {
+                  value: _vm.currentPage,
+                  callback: function($$v) {
+                    _vm.currentPage = $$v
+                  },
+                  expression: "currentPage"
+                }
+              })
+            ],
+            1
+          )
         ])
-      })
-    ],
-    1
-  )
+      ])
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header bg-dark text-white" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-5" }, [
+          _c("h4", [_vm._v(" Task Reports")])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-4" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-3" }, [
+          _c(
+            "button",
+            { staticClass: "btn btn-primary", attrs: { type: "button" } },
+            [_vm._v("Generate Reports")]
+          )
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
