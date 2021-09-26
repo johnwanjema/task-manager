@@ -152,7 +152,10 @@ __webpack_require__.r(__webpack_exports__);
 
       this.servers = this.servers + random; // console.log("start servers ni hizi " + this.servers);
 
-      this.getTimeOnTheClock(); // console.log("actualTime " + this.form.actualTime);
+      this.getTimeOnTheClock();
+      this.form.event = 'Start';
+      this.form.message = 'Start ' + this.servers + ' servers';
+      this.addTask(); // console.log("actualTime " + this.form.actualTime);
       // console.log("time on the clock " + this.form.programTime);
     },
     stopServers: function stopServers() {
@@ -215,15 +218,23 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getTimeOnTheClock: function getTimeOnTheClock() {
-      // console.log(this.hour + ":" + this.minute + ":" + this.second)
       this.form.programTime = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm:ss A");
+      this.form.actualTime = moment__WEBPACK_IMPORTED_MODULE_0___default()().format("HH:mm:ss A");
+    },
+    addTask: function addTask() {
+      console.log('adding event');
+      this.form.post("/api/tasks").then(function (_ref) {
+        var data = _ref.data;
+        console.log(data);
+      })["catch"](function (e) {
+        console.log(error);
+      });
     }
   },
   mounted: function mounted() {
     this.createClock();
-    this.startCountDown();
-    this.stopCountDown();
-    this.reportCountDown();
+    this.startCountDown(); // this.stopCountDown();
+    // this.reportCountDown();
   }
 });
 
