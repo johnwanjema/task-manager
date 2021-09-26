@@ -136,11 +136,11 @@ export default {
             var random = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
             // console.log("start random " + random);
             this.servers = this.servers + random;
-            // console.log("start servers ni hizi " + this.servers);
+            console.log("start servers ni hizi " + this.servers);
             this.getTimeOnTheClock();
-            this.form.event = 'Start'
-            this.form.message = 'Start '+ this.servers+ ' servers'
-            this.addTask();
+            this.form.event = 'START'
+            this.form.message = 'Start ' + this.servers + ' servers'
+            this.addTask('success');
             // console.log("actualTime " + this.form.actualTime);
             // console.log("time on the clock " + this.form.programTime);
         },
@@ -149,14 +149,20 @@ export default {
             console.log("stop random " + random);
             this.servers = this.servers - random;
             this.getTimeOnTheClock();
-            console.log("actualTime " + this.form.actualTime);
-            console.log("time on the clock " + this.form.programTime);
+            this.form.event = 'STOP'
+            this.form.message = 'Stop ' + random + ' servers'
+            this.addTask('warning');
+            // console.log("actualTime " + this.form.actualTime);
+            // console.log("time on the clock " + this.form.programTime);
         },
         reportServers() {
             console.log("total servers ni hizi " + this.servers);
             this.getTimeOnTheClock();
-            console.log("actualTime " + this.form.actualTime);
-            console.log("time on the clock " + this.form.programTime);
+            this.form.event = 'REPORT'
+            this.form.message = 'Report ' + this.servers + ' servers running'
+            this.addTask('info');
+            // console.log("actualTime " + this.form.actualTime);
+            // console.log("time on the clock " + this.form.programTime);
         },
         startCountDown() {
             var timeLeft = 3;
@@ -212,10 +218,14 @@ export default {
         },
         getTimeOnTheClock() {
             this.form.programTime = moment(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm:ss A");
-            this.form.actualTime =  moment().format("HH:mm:ss A");
+            this.form.actualTime = moment().format("HH:mm:ss A");
         },
-        addTask() {
+        addTask(icon) {
             console.log('adding event');
+            toast.fire({
+                icon: icon,
+                title: this.form.message,
+            });
             this.form.post("/api/tasks")
                 .then(({ data }) => {
                     console.log(data);
@@ -228,8 +238,8 @@ export default {
     mounted() {
         this.createClock();
         this.startCountDown();
-        // this.stopCountDown();
-        // this.reportCountDown();
+        this.stopCountDown();
+        this.reportCountDown();
     }
 };
 </script>

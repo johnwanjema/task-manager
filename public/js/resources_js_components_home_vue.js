@@ -150,12 +150,12 @@ __webpack_require__.r(__webpack_exports__);
     startServers: function startServers() {
       var random = Math.floor(Math.random() * (20 - 10 + 1)) + 10; // console.log("start random " + random);
 
-      this.servers = this.servers + random; // console.log("start servers ni hizi " + this.servers);
-
+      this.servers = this.servers + random;
+      console.log("start servers ni hizi " + this.servers);
       this.getTimeOnTheClock();
-      this.form.event = 'Start';
+      this.form.event = 'START';
       this.form.message = 'Start ' + this.servers + ' servers';
-      this.addTask(); // console.log("actualTime " + this.form.actualTime);
+      this.addTask('success'); // console.log("actualTime " + this.form.actualTime);
       // console.log("time on the clock " + this.form.programTime);
     },
     stopServers: function stopServers() {
@@ -163,14 +163,18 @@ __webpack_require__.r(__webpack_exports__);
       console.log("stop random " + random);
       this.servers = this.servers - random;
       this.getTimeOnTheClock();
-      console.log("actualTime " + this.form.actualTime);
-      console.log("time on the clock " + this.form.programTime);
+      this.form.event = 'STOP';
+      this.form.message = 'Stop ' + random + ' servers';
+      this.addTask('warning'); // console.log("actualTime " + this.form.actualTime);
+      // console.log("time on the clock " + this.form.programTime);
     },
     reportServers: function reportServers() {
       console.log("total servers ni hizi " + this.servers);
       this.getTimeOnTheClock();
-      console.log("actualTime " + this.form.actualTime);
-      console.log("time on the clock " + this.form.programTime);
+      this.form.event = 'REPORT';
+      this.form.message = 'Report ' + this.servers + ' servers running';
+      this.addTask('info'); // console.log("actualTime " + this.form.actualTime);
+      // console.log("time on the clock " + this.form.programTime);
     },
     startCountDown: function startCountDown() {
       var timeLeft = 3;
@@ -221,8 +225,12 @@ __webpack_require__.r(__webpack_exports__);
       this.form.programTime = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm:ss A");
       this.form.actualTime = moment__WEBPACK_IMPORTED_MODULE_0___default()().format("HH:mm:ss A");
     },
-    addTask: function addTask() {
+    addTask: function addTask(icon) {
       console.log('adding event');
+      toast.fire({
+        icon: icon,
+        title: this.form.message
+      });
       this.form.post("/api/tasks").then(function (_ref) {
         var data = _ref.data;
         console.log(data);
@@ -233,8 +241,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.createClock();
-    this.startCountDown(); // this.stopCountDown();
-    // this.reportCountDown();
+    this.startCountDown();
+    this.stopCountDown();
+    this.reportCountDown();
   }
 });
 
