@@ -217,7 +217,7 @@ export default {
         },
         getTimeOnTheClock() {
             this.form.programTime = moment(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm:ss A");
-            this.form.actualTime = moment().format("HH:mm:ss A");
+            this.form.actualTime = moment().format("hh:mm:ss A");
         },
         addTask(icon) {
             console.log('adding event');

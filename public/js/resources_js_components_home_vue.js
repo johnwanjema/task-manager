@@ -223,7 +223,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     getTimeOnTheClock: function getTimeOnTheClock() {
       this.form.programTime = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm:ss A");
-      this.form.actualTime = moment__WEBPACK_IMPORTED_MODULE_0___default()().format("HH:mm:ss A");
+      this.form.actualTime = moment__WEBPACK_IMPORTED_MODULE_0___default()().format("hh:mm:ss A");
     },
     addTask: function addTask(icon) {
       var _this = this;
