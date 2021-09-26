@@ -11,10 +11,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
 //
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -22,9 +25,21 @@ __webpack_require__.r(__webpack_exports__);
       radius: '',
       second: 0,
       minute: 0,
-      hour: 12
+      hour: 12,
+      servers: 0,
+      timeNow: moment__WEBPACK_IMPORTED_MODULE_0___default()().format("HH:mm:ss A"),
+      timeOnTheClock: ''
     };
   },
+  // watch: {
+  //     second: function(val) {
+  //         if(this.second == 30){
+  //             console.log('watching'+this.second);
+  //             this.startServers();
+  //         }
+  //         // else{}
+  //     },
+  // },
   methods: {
     createClock: function createClock() {
       var canvas = document.getElementById("canvas");
@@ -123,10 +138,77 @@ __webpack_require__.r(__webpack_exports__);
       ctx.lineTo(0, -length);
       ctx.stroke();
       ctx.rotate(-pos);
+    },
+    startServers: function startServers() {
+      var random = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
+      console.log("start random " + random);
+      this.servers = this.servers + random;
+      console.log("start servers ni hizi " + this.servers);
+      this.getTimeOnTheClock();
+      console.log("actualTime " + this.timeNow);
+      console.log("time on the clock " + this.timeOnTheClock);
+    },
+    stopServers: function stopServers() {
+      var random = Math.floor(Math.random() * (this.servers - 5 + 1)) + 5;
+      console.log("stop random " + random);
+      this.servers = this.servers - random;
+    },
+    reportServers: function reportServers() {
+      console.log("total servers ni hizi " + this.servers);
+    },
+    startCountDown: function startCountDown() {
+      var timeLeft = 3;
+      setInterval(countdown, 2000);
+      var v = this;
+
+      function countdown() {
+        if (timeLeft == 0) {
+          timeLeft = 3;
+          v.startServers();
+        } else {
+          timeLeft--;
+        } // console.log(timeLeft);
+
+      }
+    },
+    stopCountDown: function stopCountDown() {
+      var timeLeft = 4;
+      setInterval(countdown, 2000);
+      var v = this;
+
+      function countdown() {
+        if (timeLeft == 0) {
+          timeLeft = 4;
+          v.stopServers();
+        } else {
+          timeLeft--;
+        } // console.log(timeLeft);
+
+      }
+    },
+    reportCountDown: function reportCountDown() {
+      var timeLeft = 5;
+      setInterval(countdown, 1000);
+      var v = this;
+
+      function countdown() {
+        if (timeLeft == 0) {
+          timeLeft = 5;
+          v.reportServers();
+        } else {
+          timeLeft--;
+        } // console.log(timeLeft);
+
+      }
+    },
+    getTimeOnTheClock: function getTimeOnTheClock() {
+      this.timeOnTheClock = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm A");
     }
   },
   mounted: function mounted() {
     this.createClock();
+    this.startCountDown(); // this.stopCountDown();
+    // this.reportCountDown();
   }
 });
 

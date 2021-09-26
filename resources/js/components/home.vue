@@ -3,16 +3,29 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
     data() {
         return {
             ctx: '',
             radius: '',
-            second:0,
-            minute:0,
-            hour:12,
+            second: 0,
+            minute: 0,
+            hour: 12,
+            servers: 0,
+            timeNow: moment().format("HH:mm:ss A"),
+            timeOnTheClock: ''
         }
     },
+    // watch: {
+    //     second: function(val) {
+    //         if(this.second == 30){
+    //             console.log('watching'+this.second);
+    //             this.startServers();
+    //         }
+    //         // else{}
+    //     },
+    // },
     methods: {
         createClock() {
             var canvas = document.getElementById("canvas");
@@ -25,15 +38,15 @@ export default {
             var v = this;
             setInterval(function() {
                 v.drawClock();
-                if(v.second == 59){
+                if (v.second == 59) {
                     v.second = 0;
-                    if(v.minute == 59){
+                    if (v.minute == 59) {
                         v.minute = 0;
                         v.hour++;
-                    }else{
+                    } else {
                         v.minute++;
                     }
-                }else{
+                } else {
                     v.second++;
                 }
             }, 1000);
@@ -113,10 +126,88 @@ export default {
             ctx.lineTo(0, -length);
             ctx.stroke();
             ctx.rotate(-pos);
+        },
+        startServers() {
+            var random = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
+            console.log("start random " + random);
+            this.servers = this.servers + random;
+            console.log("start servers ni hizi " + this.servers);
+            this.getTimeOnTheClock();
+            console.log("actualTime " + this.timeNow);
+            console.log("time on the clock " + this.timeOnTheClock);
+        },
+        stopServers() {
+            var random = Math.floor(Math.random() * (this.servers - 5 + 1)) + 5;
+            console.log("stop random " + random);
+            this.servers = this.servers - random
+        },
+        reportServers() {
+            console.log("total servers ni hizi " + this.servers);
+        },
+        startCountDown() {
+            var timeLeft = 3;
+
+            setInterval(countdown, 2000);
+
+            var v = this;
+
+            function countdown() {
+                if (timeLeft == 0) {
+                    timeLeft = 3;
+                    v.startServers();
+                } else {
+                    timeLeft--;
+                }
+                // console.log(timeLeft);
+
+            }
+        },
+        stopCountDown() {
+            var timeLeft = 4;
+
+            setInterval(countdown, 2000);
+
+            var v = this;
+
+            function countdown() {
+                if (timeLeft == 0) {
+                    timeLeft = 4;
+                    v.stopServers();
+                } else {
+                    timeLeft--;
+                }
+                // console.log(timeLeft);
+
+            }
+        },
+        reportCountDown() {
+            var timeLeft = 5;
+
+            setInterval(countdown, 1000);
+
+            var v = this;
+
+            function countdown() {
+                if (timeLeft == 0) {
+                    timeLeft = 5;
+                    v.reportServers();
+                } else {
+                    timeLeft--;
+                }
+                // console.log(timeLeft);
+
+            }
+        },
+        getTimeOnTheClock() {
+            this.timeOnTheClock = moment(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm A");
         }
     },
     mounted() {
         this.createClock();
+        this.startCountDown();
+        // this.stopCountDown();
+        // this.reportCountDown();
+
     }
 };
 </script>
