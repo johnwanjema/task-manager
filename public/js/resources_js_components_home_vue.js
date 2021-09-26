@@ -43,9 +43,14 @@ __webpack_require__.r(__webpack_exports__);
       minute: 0,
       hour: 12,
       servers: 0,
-      timeNow: moment__WEBPACK_IMPORTED_MODULE_0___default()().format("HH:mm:ss A"),
-      timeOnTheClock: '',
-      form: new Form({})
+      // actualTime: moment().format("HH:mm:ss A"),
+      // programTime: '',
+      form: new Form({
+        programTime: '',
+        event: '',
+        message: '',
+        actualTime: moment__WEBPACK_IMPORTED_MODULE_0___default()().format("HH:mm:ss A")
+      })
     };
   },
   methods: {
@@ -147,22 +152,22 @@ __webpack_require__.r(__webpack_exports__);
 
       this.servers = this.servers + random; // console.log("start servers ni hizi " + this.servers);
 
-      this.getTimeOnTheClock(); // console.log("actualTime " + this.timeNow);
-      // console.log("time on the clock " + this.timeOnTheClock);
+      this.getTimeOnTheClock(); // console.log("actualTime " + this.form.actualTime);
+      // console.log("time on the clock " + this.form.programTime);
     },
     stopServers: function stopServers() {
       var random = Math.floor(Math.random() * (this.servers - 5 + 1)) + 5;
       console.log("stop random " + random);
       this.servers = this.servers - random;
       this.getTimeOnTheClock();
-      console.log("actualTime " + this.timeNow);
-      console.log("time on the clock " + this.timeOnTheClock);
+      console.log("actualTime " + this.form.actualTime);
+      console.log("time on the clock " + this.form.programTime);
     },
     reportServers: function reportServers() {
       console.log("total servers ni hizi " + this.servers);
       this.getTimeOnTheClock();
-      console.log("actualTime " + this.timeNow);
-      console.log("time on the clock " + this.timeOnTheClock);
+      console.log("actualTime " + this.form.actualTime);
+      console.log("time on the clock " + this.form.programTime);
     },
     startCountDown: function startCountDown() {
       var timeLeft = 3;
@@ -211,7 +216,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     getTimeOnTheClock: function getTimeOnTheClock() {
       // console.log(this.hour + ":" + this.minute + ":" + this.second)
-      this.timeOnTheClock = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm:ss A");
+      this.form.programTime = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm:ss A");
     }
   },
   mounted: function mounted() {

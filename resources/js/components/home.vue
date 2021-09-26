@@ -28,10 +28,13 @@ export default {
             minute: 0,
             hour: 12,
             servers: 0,
-            timeNow: moment().format("HH:mm:ss A"),
-            timeOnTheClock: '',
+            // actualTime: moment().format("HH:mm:ss A"),
+            // programTime: '',
             form: new Form({
-
+                programTime:'',
+                event:'',
+                message:'',
+                actualTime:moment().format("HH:mm:ss A"),
             })
         }
     },
@@ -135,22 +138,22 @@ export default {
             this.servers = this.servers + random;
             // console.log("start servers ni hizi " + this.servers);
             this.getTimeOnTheClock();
-            // console.log("actualTime " + this.timeNow);
-            // console.log("time on the clock " + this.timeOnTheClock);
+            // console.log("actualTime " + this.form.actualTime);
+            // console.log("time on the clock " + this.form.programTime);
         },
         stopServers() {
             var random = Math.floor(Math.random() * (this.servers - 5 + 1)) + 5;
             console.log("stop random " + random);
             this.servers = this.servers - random;
             this.getTimeOnTheClock();
-            console.log("actualTime " + this.timeNow);
-            console.log("time on the clock " + this.timeOnTheClock);
+            console.log("actualTime " + this.form.actualTime);
+            console.log("time on the clock " + this.form.programTime);
         },
         reportServers() {
             console.log("total servers ni hizi " + this.servers);
             this.getTimeOnTheClock();
-            console.log("actualTime " + this.timeNow);
-            console.log("time on the clock " + this.timeOnTheClock);
+            console.log("actualTime " + this.form.actualTime);
+            console.log("time on the clock " + this.form.programTime);
         },
         startCountDown() {
             var timeLeft = 3;
@@ -206,7 +209,7 @@ export default {
         },
         getTimeOnTheClock() {
             // console.log(this.hour + ":" + this.minute + ":" + this.second)
-            this.timeOnTheClock = moment(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm:ss A");
+            this.form.programTime = moment(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm:ss A");
         }
     },
     mounted() {
