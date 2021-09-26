@@ -48,7 +48,10 @@ __webpack_require__.r(__webpack_exports__);
         event: '',
         message: '',
         actualTime: moment__WEBPACK_IMPORTED_MODULE_0___default()().format("HH:mm:ss A")
-      })
+      }),
+      wallColour: '#223',
+      clockFaceColour: 'yellow',
+      hourLabesColour: '#1ecbe1'
     };
   },
   methods: {
@@ -68,7 +71,7 @@ __webpack_require__.r(__webpack_exports__);
       var grad;
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, 2 * Math.PI);
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = this.clockFaceColour;
       ctx.fill();
       grad = ctx.createRadialGradient(0, 0, radius * 0.95, 0, 0, radius * 1.05);
       grad.addColorStop(0, '#333');
@@ -79,7 +82,7 @@ __webpack_require__.r(__webpack_exports__);
       ctx.stroke();
       ctx.beginPath();
       ctx.arc(0, 0, radius * 0.1, 0, 2 * Math.PI);
-      ctx.fillStyle = '#333';
+      ctx.fillStyle = this.hourLabesColour;
       ctx.fill();
     },
     //Draw clock numbers
@@ -508,7 +511,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid" }, [
     _c("div", { staticClass: "row" }, [
-      _vm._m(0),
+      _c("div", { staticClass: "col-md-3" }, [
+        _c("canvas", {
+          style: { "background-color": _vm.wallColour },
+          attrs: { id: "canvas", width: "400", height: "400" }
+        })
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-1" }),
       _vm._v(" "),
@@ -521,19 +529,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-3" }, [
-      _c("canvas", {
-        staticStyle: { "background-color": "#333", "padding-top": "20px" },
-        attrs: { id: "canvas", width: "400", height: "400" }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                <canvas id="canvas" width="400" height="400" style="background-color: #333; padding-top:20px;"></canvas>
+                <canvas id="canvas" width="400" height="400" :style="{'background-color': wallColour }"></canvas>
             </div>
             <div class="col-md-1">
             </div>
@@ -33,8 +33,11 @@ export default {
                 event: '',
                 message: '',
                 actualTime: moment().format("HH:mm:ss A"),
-            })
-        }
+            }),
+            wallColour:'#223',
+            clockFaceColour:'yellow',
+            hourLabesColour:'#1ecbe1',
+            }
     },
     methods: {
         // Create Cloclk
@@ -54,7 +57,7 @@ export default {
             var grad;
             ctx.beginPath();
             ctx.arc(0, 0, radius, 0, 2 * Math.PI);
-            ctx.fillStyle = 'white';
+            ctx.fillStyle = this.clockFaceColour;
             ctx.fill();
             grad = ctx.createRadialGradient(0, 0, radius * 0.95, 0, 0, radius * 1.05);
             grad.addColorStop(0, '#333');
@@ -65,7 +68,7 @@ export default {
             ctx.stroke();
             ctx.beginPath();
             ctx.arc(0, 0, radius * 0.1, 0, 2 * Math.PI);
-            ctx.fillStyle = '#333';
+            ctx.fillStyle = this.hourLabesColour;
             ctx.fill();
         },
 
