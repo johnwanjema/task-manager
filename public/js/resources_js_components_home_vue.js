@@ -226,6 +226,8 @@ __webpack_require__.r(__webpack_exports__);
       this.form.actualTime = moment__WEBPACK_IMPORTED_MODULE_0___default()().format("HH:mm:ss A");
     },
     addTask: function addTask(icon) {
+      var _this = this;
+
       console.log('adding event');
       toast.fire({
         icon: icon,
@@ -233,7 +235,9 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.form.post("/api/tasks").then(function (_ref) {
         var data = _ref.data;
-        console.log(data);
+
+        // console.log(data);
+        _this.$refs.reportsComponent.getTasks();
       })["catch"](function (e) {
         console.log(error);
       });
@@ -350,6 +354,9 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (e) {
         console.log(error);
       });
+    },
+    doSomething: function doSomething() {
+      alert('qweqw');
     }
   },
   mounted: function mounted() {
@@ -518,7 +525,12 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "col-md-1" }),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-8" }, [_c("reports")], 1)
+      _c(
+        "div",
+        { staticClass: "col-md-8" },
+        [_c("reports", { ref: "reportsComponent" })],
+        1
+      )
     ])
   ])
 }
@@ -677,7 +689,7 @@ var render = function() {
               striped: "",
               hover: "",
               "show-empty": "",
-              small: _vm.small,
+              small: "small",
               items: _vm.reports,
               fields: _vm.fields,
               "per-page": _vm.perPage,

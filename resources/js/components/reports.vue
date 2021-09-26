@@ -35,7 +35,7 @@
                                 </div>
                             </div>
                         </div>
-                <b-table responsive striped hover show-empty  :small="small" :items="reports" :fields="fields" :per-page="perPage" :current-page="currentPage" :filter="filter" :filterIncludedFields="filterOn" @filtered="onFiltered">
+                <b-table responsive striped hover show-empty  :small="'small'" :items="reports" :fields="fields" :per-page="perPage" :current-page="currentPage" :filter="filter" :filterIncludedFields="filterOn" @filtered="onFiltered">
                     <template v-slot:cell(#)="row">
                             <p>{{row.index + 1}}</p>
                     </template>
@@ -85,6 +85,9 @@ export default {
                 .catch((e) => {
                     console.log(error)
                 });
+        },
+        doSomething(){
+            alert('qweqw')
         }
     },
     mounted() {

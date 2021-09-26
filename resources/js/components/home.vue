@@ -7,7 +7,7 @@
             <div class="col-md-1">
             </div>
             <div class="col-md-8">
-                <reports></reports>
+                <reports ref="reportsComponent"></reports>
             </div>
         </div>
     </div>
@@ -227,7 +227,8 @@ export default {
             });
             this.form.post("/api/tasks")
                 .then(({ data }) => {
-                    console.log(data);
+                    // console.log(data);
+                    this.$refs.reportsComponent.getTasks();
                 })
                 .catch((e) => {
                     console.log(error)
