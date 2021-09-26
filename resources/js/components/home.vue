@@ -1,10 +1,25 @@
 <template>
-    <canvas id="canvas" width="400" height="400" style="background-color: #333; padding-top:20px;"></canvas>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <canvas id="canvas" width="400" height="400" style="background-color: #333; padding-top:20px;"></canvas>
+            </div>
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-8">
+                <reports></reports>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import moment from 'moment'
+import reports from './reports'
 export default {
+    components: {
+        reports
+    },
     data() {
         return {
             ctx: '',
@@ -15,7 +30,7 @@ export default {
             servers: 0,
             timeNow: moment().format("HH:mm:ss A"),
             timeOnTheClock: '',
-            form:new Form({
+            form: new Form({
 
             })
         }
@@ -141,6 +156,7 @@ export default {
             var timeLeft = 3;
             setInterval(countdown, 2000);
             var v = this;
+
             function countdown() {
                 if (timeLeft == 0) {
                     timeLeft = 3;
