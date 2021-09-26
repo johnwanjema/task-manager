@@ -14,18 +14,12 @@ export default {
             hour: 12,
             servers: 0,
             timeNow: moment().format("HH:mm:ss A"),
-            timeOnTheClock: ''
+            timeOnTheClock: '',
+            form:new Form({
+
+            })
         }
     },
-    // watch: {
-    //     second: function(val) {
-    //         if(this.second == 30){
-    //             console.log('watching'+this.second);
-    //             this.startServers();
-    //         }
-    //         // else{}
-    //     },
-    // },
     methods: {
         createClock() {
             var canvas = document.getElementById("canvas");
@@ -97,13 +91,6 @@ export default {
             var minute = this.minute;
             var second = this.second;
 
-            // var now = new Date();
-            // var hour = now.getHours();
-            // var minute = now.getMinutes();
-            // var second = now.getSeconds();
-
-            // console.log(hour,minute,second);
-
             //hour
             hour = hour % 12;
             hour = (hour * Math.PI / 6) +
@@ -129,28 +116,31 @@ export default {
         },
         startServers() {
             var random = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
-            console.log("start random " + random);
+            // console.log("start random " + random);
             this.servers = this.servers + random;
-            console.log("start servers ni hizi " + this.servers);
+            // console.log("start servers ni hizi " + this.servers);
             this.getTimeOnTheClock();
-            console.log("actualTime " + this.timeNow);
-            console.log("time on the clock " + this.timeOnTheClock);
+            // console.log("actualTime " + this.timeNow);
+            // console.log("time on the clock " + this.timeOnTheClock);
         },
         stopServers() {
             var random = Math.floor(Math.random() * (this.servers - 5 + 1)) + 5;
             console.log("stop random " + random);
-            this.servers = this.servers - random
+            this.servers = this.servers - random;
+            this.getTimeOnTheClock();
+            console.log("actualTime " + this.timeNow);
+            console.log("time on the clock " + this.timeOnTheClock);
         },
         reportServers() {
             console.log("total servers ni hizi " + this.servers);
+            this.getTimeOnTheClock();
+            console.log("actualTime " + this.timeNow);
+            console.log("time on the clock " + this.timeOnTheClock);
         },
         startCountDown() {
             var timeLeft = 3;
-
             setInterval(countdown, 2000);
-
             var v = this;
-
             function countdown() {
                 if (timeLeft == 0) {
                     timeLeft = 3;
@@ -199,15 +189,15 @@ export default {
             }
         },
         getTimeOnTheClock() {
-            this.timeOnTheClock = moment(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm A");
+            // console.log(this.hour + ":" + this.minute + ":" + this.second)
+            this.timeOnTheClock = moment(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm:ss A");
         }
     },
     mounted() {
         this.createClock();
         this.startCountDown();
-        // this.stopCountDown();
-        // this.reportCountDown();
-
+        this.stopCountDown();
+        this.reportCountDown();
     }
 };
 </script>

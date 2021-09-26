@@ -28,18 +28,10 @@ __webpack_require__.r(__webpack_exports__);
       hour: 12,
       servers: 0,
       timeNow: moment__WEBPACK_IMPORTED_MODULE_0___default()().format("HH:mm:ss A"),
-      timeOnTheClock: ''
+      timeOnTheClock: '',
+      form: new Form({})
     };
   },
-  // watch: {
-  //     second: function(val) {
-  //         if(this.second == 30){
-  //             console.log('watching'+this.second);
-  //             this.startServers();
-  //         }
-  //         // else{}
-  //     },
-  // },
   methods: {
     createClock: function createClock() {
       var canvas = document.getElementById("canvas");
@@ -112,12 +104,7 @@ __webpack_require__.r(__webpack_exports__);
     drawTime: function drawTime(ctx, radius) {
       var hour = this.hour;
       var minute = this.minute;
-      var second = this.second; // var now = new Date();
-      // var hour = now.getHours();
-      // var minute = now.getMinutes();
-      // var second = now.getSeconds();
-      // console.log(hour,minute,second);
-      //hour
+      var second = this.second; //hour
 
       hour = hour % 12;
       hour = hour * Math.PI / 6 + minute * Math.PI / (6 * 60) + second * Math.PI / (360 * 60);
@@ -140,21 +127,26 @@ __webpack_require__.r(__webpack_exports__);
       ctx.rotate(-pos);
     },
     startServers: function startServers() {
-      var random = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
-      console.log("start random " + random);
-      this.servers = this.servers + random;
-      console.log("start servers ni hizi " + this.servers);
-      this.getTimeOnTheClock();
-      console.log("actualTime " + this.timeNow);
-      console.log("time on the clock " + this.timeOnTheClock);
+      var random = Math.floor(Math.random() * (20 - 10 + 1)) + 10; // console.log("start random " + random);
+
+      this.servers = this.servers + random; // console.log("start servers ni hizi " + this.servers);
+
+      this.getTimeOnTheClock(); // console.log("actualTime " + this.timeNow);
+      // console.log("time on the clock " + this.timeOnTheClock);
     },
     stopServers: function stopServers() {
       var random = Math.floor(Math.random() * (this.servers - 5 + 1)) + 5;
       console.log("stop random " + random);
       this.servers = this.servers - random;
+      this.getTimeOnTheClock();
+      console.log("actualTime " + this.timeNow);
+      console.log("time on the clock " + this.timeOnTheClock);
     },
     reportServers: function reportServers() {
       console.log("total servers ni hizi " + this.servers);
+      this.getTimeOnTheClock();
+      console.log("actualTime " + this.timeNow);
+      console.log("time on the clock " + this.timeOnTheClock);
     },
     startCountDown: function startCountDown() {
       var timeLeft = 3;
@@ -202,13 +194,15 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getTimeOnTheClock: function getTimeOnTheClock() {
-      this.timeOnTheClock = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm A");
+      // console.log(this.hour + ":" + this.minute + ":" + this.second)
+      this.timeOnTheClock = moment__WEBPACK_IMPORTED_MODULE_0___default()(this.hour + ":" + this.minute + ":" + this.second, "HH:mm:ss").format("hh:mm:ss A");
     }
   },
   mounted: function mounted() {
     this.createClock();
-    this.startCountDown(); // this.stopCountDown();
-    // this.reportCountDown();
+    this.startCountDown();
+    this.stopCountDown();
+    this.reportCountDown();
   }
 });
 
