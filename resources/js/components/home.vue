@@ -37,6 +37,7 @@ export default {
         }
     },
     methods: {
+        // Create Cloclk
         createClock() {
             var canvas = document.getElementById("canvas");
             var ctx = canvas.getContext("2d");
@@ -45,13 +46,10 @@ export default {
             this.radius = canvas.height / 3;
             ctx.translate(radius, radius);
             radius = radius * 0.9;
-            this.getCurrentTime();
+            this.getProgramTime();
         },
-        drawClock() {
-            this.drawFace(this.ctx, this.radius);
-            this.drawNumbers(this.ctx, this.radius);
-            this.drawTime(this.ctx, this.radius);
-        },
+       
+        //Draw clock face
         drawFace(ctx, radius) {
             var grad;
             ctx.beginPath();
@@ -70,6 +68,8 @@ export default {
             ctx.fillStyle = '#333';
             ctx.fill();
         },
+
+        //Draw clock numbers
         drawNumbers(ctx, radius) {
             var ang;
             var num;
@@ -87,6 +87,8 @@ export default {
                 ctx.rotate(-ang);
             }
         },
+
+        //Draw time
         drawTime(ctx, radius) {
             var hour = this.hour;
             var minute = this.minute;
@@ -98,7 +100,7 @@ export default {
                 (minute * Math.PI / (6 * 60)) +
                 (second * Math.PI / (360 * 60));
             this.drawHand(ctx, hour, radius * 0.5, radius * 0.07);
-            
+
             //minute
             minute = (minute * Math.PI / 30) + (second * Math.PI / (30 * 60));
             this.drawHand(ctx, minute, radius * 0.8, radius * 0.07);
@@ -106,6 +108,8 @@ export default {
             second = (second * Math.PI / 30);
             this.drawHand(ctx, second, radius * 0.9, radius * 0.02);
         },
+
+        //Draw Clock hands
         drawHand(ctx, pos, length, width) {
             ctx.beginPath();
             ctx.lineWidth = width;
@@ -116,20 +120,24 @@ export default {
             ctx.stroke();
             ctx.rotate(-pos);
         },
+
+        //Start servers
         startServers() {
             var random = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
             this.servers = this.servers + random;
-            this.getTimeOnTheClock();
+            this.getActualTime();
             this.form.event = 'START'
             this.form.message = 'Start ' + random + ' servers'
             this.addTask('success');
             console.log("start servers ni hizi " + random);
             console.log("total servers ni hizi " + this.servers);
         },
+
+        //Stop servers
         stopServers() {
             var random = Math.floor(Math.random() * (this.servers - 5 + 1)) + 5;
             this.servers = this.servers - random;
-            this.getTimeOnTheClock();
+            this.getActualTime();
             this.form.event = 'STOP'
             this.form.message = 'Stop ' + random + ' servers'
             this.addTask('warning');
@@ -138,17 +146,22 @@ export default {
             // console.log("actualTime " + this.form.actualTime);
             // console.log("time on the clock " + this.form.programTime);
         },
+
+        //Report Running Server
         reportServers() {
             console.log("total servers ni hizi " + this.servers);
-            this.getTimeOnTheClock();
+            this.getActualTime();
             this.form.event = 'REPORT'
             this.form.message = 'Report ' + this.servers + ' servers running'
             this.addTask('info');
         },
        
-        getTimeOnTheClock() {
+        // Get Actual time
+        getActualTime() {
             this.form.actualTime = moment().format("hh:mm:ss A");
         },
+
+        //Send Task to Backend API
         addTask(icon) {
             toast.fire({
                 icon: icon,
@@ -163,14 +176,16 @@ export default {
                     console.log(error)
                 });
         },
-        getCurrentTime() {
+
+        //Evaluate program time to 12 and Draw Clock
+        getProgramTime() {
             var startTime = new Date();
             var v = this;
             var startTimeLeft = 30;
             var stopTimeLeft = 40;
             var reportTimeLeft = 50;
             function clock() {
-                // v.drawClock();
+                
                 //the time you want to start from
                 var mytime = new Date(2011, 0, 1, 12, 0, 0, 567);
 
@@ -185,13 +200,15 @@ export default {
                 v.minute = mytime.getMinutes();
                 v.hour = mytime.getHours();
 
+                //Update program time
                 v.form.programTime = v.hour + ":" + v.minute + ":" + v.second;
 
+                //Draw face,numbers and time
                 v.drawFace(v.ctx, v.radius);
                 v.drawNumbers(v.ctx, v.radius);
                 v.drawTime(v.ctx, v.radius);
 
-
+                //Calculate time needed to start servers
                 if (startTimeLeft == 1) {
                     startTimeLeft = 30;
                     v.startServers();
@@ -199,7 +216,7 @@ export default {
                     startTimeLeft--;
                 }
 
-
+                //Calculate time needed to stop servers
                 if (stopTimeLeft == 1) {
                     stopTimeLeft = 40;
                     v.stopServers();
@@ -207,6 +224,7 @@ export default {
                     stopTimeLeft--;
                 }
 
+                //Calculate time needed to report servers
                 if (reportTimeLeft == 1) {
                     reportTimeLeft = 50;
                     v.reportServers();
@@ -214,6 +232,7 @@ export default {
                     reportTimeLeft--;
                 }
             }
+
             setInterval(clock, 1000);
         },
     },
