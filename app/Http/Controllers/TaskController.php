@@ -48,37 +48,54 @@ class TaskController extends Controller
                 'hourLabelsColour' => 'required',
             ]);
             
-            $request['wallColour'] = 'black';
-            $request['clockFaceColour'] = 'red';
-            $request['hourLabelsColour'] = 'white';
             //array of colors
-            $arr = array("#0000ff", "red", "#ffff00", "#008000", 'black', '#808080', '#800080', 'white', '#008080', '#ffffff');
+            $wallColors= array("#0000ff", "#ff0000", "#ffff00", "#008000", '#000000', '#808080', '#800080','#008080', '#ffffff');
+            $clockFaceColors= array("#ffffff", "#ff0000", "#008000");
+            $hourLabelsColours = array("#000000", "#ffff00", "#0000ff");
         
             // Use array_rand function to returns random key
-            $random = array_rand($arr);
-        
+            $wallRandom = array_rand($wallColors);
+
+            // dd($wallRandom);
+
+            
             //check if new value equals old wall  value
-            if ($arr[$random] ==  $request['wallColour']) {
-                $wallColour = $arr[$random + 1];
+            if ($wallColors[$wallRandom] ==  $request['wallColour']) {
+                $wallColour = $wallRandom == 8 ? $wallColors[$wallRandom - 1] : $wallColors[$wallRandom + 1];;
             } else {
-                $wallColour = $arr[$random];
-            }
-        
-            // check if new value equals old wall  value
-            if ($arr[$random] ==  $request['clockFaceColour']) {
-                $clockFaceColour = $arr[$random + 1];
-            } else {
-                $clockFaceColour = $arr[$random];
-            }
-        
-            //check if new value equals old wall  value
-            if ($arr[$random] ==  $request['hourLabelsColour']) {
-                $hourLabelsColour = $arr[$random + 1];
-            } else {
-                $hourLabelsColour = $arr[$random];
+                $wallColour = $wallColors[$wallRandom];
             }
 
-            $colors= [$wallColour,$clockFaceColour,$hourLabelsColour];
+            // dd($wallColour);
+
+            
+            
+            $clockFaceRandom = array_rand($clockFaceColors);
+            // check if new value equals old wall  value
+
+            if ($clockFaceColors[$clockFaceRandom] ==  $request['clockFaceColour']) {
+                $clockFaceColour = $clockFaceRandom == 2 ? $clockFaceColors[$clockFaceRandom - 1] : $clockFaceColors[$clockFaceRandom + 1];
+            } else {
+                $clockFaceColour = $clockFaceColors[$clockFaceRandom];
+            }
+            
+
+        
+            $hourLabelRandom = array_rand($hourLabelsColours);
+            //check if new value equals old wall  value
+            if ($hourLabelsColours[$hourLabelRandom] ==  $request['hourLabelsColour']) {
+                $hourLabelsColour = $hourLabelRandom == 2 ? $hourLabelsColours[$hourLabelRandom - 1] : $hourLabelsColours[$hourLabelRandom + 1];
+            } else {
+                $hourLabelsColour = $hourLabelsColours[$hourLabelRandom];
+            }
+
+
+            $colors = [
+                'wallColour' => $wallColour,
+                'clockFaceColour' => $clockFaceColour,
+                'hourLabelsColour' => $hourLabelsColour
+            ];
+
 
             $task = new Task();
             $task->programTime = date("H:i:s", strtotime($request['programTime']));
