@@ -15,7 +15,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::orderBY('created_at', 'DESC')->get();
-        return api_response(true, null, 200, 'success', 'successfully fetched all tasks', $tasks);
+        return api_response(true, null, 200, 'success', 'successfully fetched all tasks', $tasks, null);
     }
 
     /**
@@ -43,7 +43,42 @@ class TaskController extends Controller
                 'event' => 'required',
                 'message' => 'required',
                 'actualTime' => 'required',
+                'wallColour' => 'required',
+                'clockFaceColour' => 'required',
+                'hourLabelsColour' => 'required',
             ]);
+            
+            $request['wallColour'] = 'black';
+            $request['clockFaceColour'] = 'red';
+            $request['hourLabelsColour'] = 'white';
+            //array of colors
+            $arr = array("#0000ff", "red", "#ffff00", "#008000", 'black', '#808080', '#800080', 'white', '#008080', '#ffffff');
+        
+            // Use array_rand function to returns random key
+            $random = array_rand($arr);
+        
+            //check if new value equals old wall  value
+            if ($arr[$random] ==  $request['wallColour']) {
+                $wallColour = $arr[$random + 1];
+            } else {
+                $wallColour = $arr[$random];
+            }
+        
+            // check if new value equals old wall  value
+            if ($arr[$random] ==  $request['clockFaceColour']) {
+                $clockFaceColour = $arr[$random + 1];
+            } else {
+                $clockFaceColour = $arr[$random];
+            }
+        
+            //check if new value equals old wall  value
+            if ($arr[$random] ==  $request['hourLabelsColour']) {
+                $hourLabelsColour = $arr[$random + 1];
+            } else {
+                $hourLabelsColour = $arr[$random];
+            }
+
+            $colors= [$wallColour,$clockFaceColour,$hourLabelsColour];
 
             $task = new Task();
             $task->programTime = date("H:i:s", strtotime($request['programTime']));
@@ -52,12 +87,12 @@ class TaskController extends Controller
             $task->actualTime = date("H:i:s", strtotime($request['actualTime']));;
 
             if ($task->save()) {
-                return api_response(true, null, 200, 'success', 'successfully saved task', $task);
+                return api_response(true, null, 200, 'success', 'successfully saved task', $task, $colors);
             } else {
-                return api_response(false, null, 200, 'success', 'successfully saved task', $task);
+                return api_response(false, null, 200, 'success', 'successfully saved task', $task, null);
             }
         } catch (\Exception $exception) {
-            return api_response(false, $exception->getMessage(), 200, 'error', 'error saving task', null);
+            return api_response(false, $exception->getMessage(), 200, 'error', 'error saving task', null, null);
         }
     }
 

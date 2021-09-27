@@ -1,6 +1,6 @@
 <?php
 
-function api_response($success, $errors, $status_code, $status_message, $message, $data)
+function api_response($success, $errors, $status_code, $status_message, $message, $data,$color)
 {
     $response = array();
     $response['success'] = $success;
@@ -9,6 +9,6 @@ function api_response($success, $errors, $status_code, $status_message, $message
     $response['status_message'] = $status_message;
     $response['message'] = $message;
     $response['data'] = $data;
-
+    $response['color'] = $color;
     return $response;
 }
