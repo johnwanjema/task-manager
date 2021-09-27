@@ -47,11 +47,11 @@ __webpack_require__.r(__webpack_exports__);
         programTime: '',
         event: '',
         message: '',
-        actualTime: moment__WEBPACK_IMPORTED_MODULE_0___default()().format("HH:mm:ss A")
-      }),
-      wallColour: '#223',
-      clockFaceColour: 'yellow',
-      hourLabesColour: '#1ecbe1'
+        actualTime: moment__WEBPACK_IMPORTED_MODULE_0___default()().format("HH:mm:ss A"),
+        wallColour: '#000000',
+        clockFaceColour: '#ffffff',
+        hourLabelsColour: '#000000'
+      })
     };
   },
   methods: {
@@ -71,7 +71,7 @@ __webpack_require__.r(__webpack_exports__);
       var grad;
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, 2 * Math.PI);
-      ctx.fillStyle = this.clockFaceColour;
+      ctx.fillStyle = this.form.clockFaceColour;
       ctx.fill();
       grad = ctx.createRadialGradient(0, 0, radius * 0.95, 0, 0, radius * 1.05);
       grad.addColorStop(0, '#333');
@@ -82,7 +82,7 @@ __webpack_require__.r(__webpack_exports__);
       ctx.stroke();
       ctx.beginPath();
       ctx.arc(0, 0, radius * 0.1, 0, 2 * Math.PI);
-      ctx.fillStyle = this.hourLabesColour;
+      ctx.fillStyle = this.form.hourLabelsColour;
       ctx.fill();
     },
     //Draw clock numbers
@@ -138,9 +138,8 @@ __webpack_require__.r(__webpack_exports__);
       this.getActualTime();
       this.form.event = 'START';
       this.form.message = 'Start ' + random + ' servers';
-      this.addTask('success');
-      console.log("start servers ni hizi " + random);
-      console.log("total servers ni hizi " + this.servers);
+      this.addTask('success'); // console.log("start servers ni hizi " + random);
+      // console.log("total servers ni hizi " + this.servers);
     },
     //Stop servers
     stopServers: function stopServers() {
@@ -172,15 +171,17 @@ __webpack_require__.r(__webpack_exports__);
 
       toast.fire({
         icon: icon,
-        title: this.form.message
+        title: this.form.programTime + ' - ' + this.form.message
       });
       this.form.post("/api/tasks").then(function (_ref) {
         var data = _ref.data;
-
-        // console.log(data);
-        _this.$refs.reportsComponent.getTasks();
+        // console.log(this.form.wallColour);
+        _this.form.wallColour = data.color.wallColour;
+        _this.form.clockFaceColour = data.color.clockFaceColour;
+        _this.form.hourLabelsColour = data.color.hourLabelsColour;
+        console.log(data.color.clockFaceColour + '   ' + data.color.hourLabelsColour); // this.$refs.reportsComponent.getTasks();
       })["catch"](function (e) {
-        console.log(error);
+        console.log(e);
       });
     },
     //Evaluate program time to 12 and Draw Clock
@@ -334,7 +335,7 @@ __webpack_require__.r(__webpack_exports__);
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    getTasks: function getTasks() {
+    getReports: function getReports() {
       var _this = this;
 
       axios.get("/api/tasks").then(function (_ref) {
@@ -350,7 +351,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.getTasks();
+    this.getReports();
   }
 });
 
@@ -513,7 +514,7 @@ var render = function() {
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-3" }, [
         _c("canvas", {
-          style: { "background-color": _vm.wallColour },
+          style: { "background-color": _vm.form.wallColour },
           attrs: { id: "canvas", width: "400", height: "400" }
         })
       ]),
@@ -553,7 +554,25 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "card " }, [
-      _vm._m(0),
+      _c("div", { staticClass: "card-header bg-dark text-white" }, [
+        _c("div", { staticClass: "row" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-4" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-3" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: { click: _vm.getReports }
+              },
+              [_vm._v("Generate Reports")]
+            )
+          ])
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "div",
@@ -730,22 +749,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header bg-dark text-white" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-5" }, [
-          _c("h4", [_vm._v(" Task Reports")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-4" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-3" }, [
-          _c(
-            "button",
-            { staticClass: "btn btn-primary", attrs: { type: "button" } },
-            [_vm._v("Generate Reports")]
-          )
-        ])
-      ])
+    return _c("div", { staticClass: "col-md-5" }, [
+      _c("h4", [_vm._v(" Task Reports")])
     ])
   }
 ]

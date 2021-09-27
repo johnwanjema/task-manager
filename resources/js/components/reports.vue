@@ -9,7 +9,7 @@
                     <div class="col-md-4">
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-primary">Generate Reports</button>
+                        <button @click="getReports" type="button" class="btn btn-primary">Generate Reports</button>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@ export default {
             this.totalRows = filteredItems.length;
             this.currentPage = 1
         },
-        getTasks() {
+        getReports() {
             axios.get("/api/tasks")
                 .then(({ data }) => {
                     this.reports = data.data;
@@ -91,7 +91,7 @@ export default {
         }
     },
     mounted() {
-        this.getTasks();
+        this.getReports();
     }
 }
 </script>

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                <canvas id="canvas" width="400" height="400" :style="{'background-color': wallColour }"></canvas>
+                <canvas id="canvas" width="400" height="400" :style="{'background-color': form.wallColour }"></canvas>
             </div>
             <div class="col-md-1">
             </div>
@@ -33,11 +33,11 @@ export default {
                 event: '',
                 message: '',
                 actualTime: moment().format("HH:mm:ss A"),
+                wallColour: '#000000',
+                clockFaceColour: '#ffffff',
+                hourLabelsColour: '#000000',
             }),
-            wallColour:'#223',
-            clockFaceColour:'yellow',
-            hourLabesColour:'#1ecbe1',
-            }
+        }
     },
     methods: {
         // Create Cloclk
@@ -51,13 +51,13 @@ export default {
             radius = radius * 0.9;
             this.getProgramTime();
         },
-       
+
         //Draw clock face
         drawFace(ctx, radius) {
             var grad;
             ctx.beginPath();
             ctx.arc(0, 0, radius, 0, 2 * Math.PI);
-            ctx.fillStyle = this.clockFaceColour;
+            ctx.fillStyle = this.form.clockFaceColour;
             ctx.fill();
             grad = ctx.createRadialGradient(0, 0, radius * 0.95, 0, 0, radius * 1.05);
             grad.addColorStop(0, '#333');
@@ -68,7 +68,7 @@ export default {
             ctx.stroke();
             ctx.beginPath();
             ctx.arc(0, 0, radius * 0.1, 0, 2 * Math.PI);
-            ctx.fillStyle = this.hourLabesColour;
+            ctx.fillStyle = this.form.hourLabelsColour;
             ctx.fill();
         },
 
@@ -132,8 +132,8 @@ export default {
             this.form.event = 'START'
             this.form.message = 'Start ' + random + ' servers'
             this.addTask('success');
-            console.log("start servers ni hizi " + random);
-            console.log("total servers ni hizi " + this.servers);
+            // console.log("start servers ni hizi " + random);
+            // console.log("total servers ni hizi " + this.servers);
         },
 
         //Stop servers
@@ -158,7 +158,7 @@ export default {
             this.form.message = 'Report ' + this.servers + ' servers running'
             this.addTask('info');
         },
-       
+
         // Get Actual time
         getActualTime() {
             this.form.actualTime = moment().format("hh:mm:ss A");
@@ -168,15 +168,19 @@ export default {
         addTask(icon) {
             toast.fire({
                 icon: icon,
-                title: this.form.message,
+                title: this.form.programTime + ' - ' + this.form.message,
             });
             this.form.post("/api/tasks")
                 .then(({ data }) => {
-                    // console.log(data);
-                    this.$refs.reportsComponent.getTasks();
+                    // console.log(this.form.wallColour);
+                    this.form.wallColour = data.color.wallColour;
+                    this.form.clockFaceColour = data.color.clockFaceColour;
+                    this.form.hourLabelsColour = data.color.hourLabelsColour;
+                    console.log(data.color.clockFaceColour +'   ' + data.color.hourLabelsColour );
+                    // this.$refs.reportsComponent.getTasks();
                 })
                 .catch((e) => {
-                    console.log(error)
+                    console.log(e)
                 });
         },
 
@@ -187,8 +191,9 @@ export default {
             var startTimeLeft = 30;
             var stopTimeLeft = 40;
             var reportTimeLeft = 50;
+
             function clock() {
-                
+
                 //the time you want to start from
                 var mytime = new Date(2011, 0, 1, 12, 0, 0, 567);
 
